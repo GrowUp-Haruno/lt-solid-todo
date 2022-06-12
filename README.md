@@ -48,3 +48,19 @@ yarn add dexie
 ## SolidJSでのDexie.jsの操作方法の一次ソース
 - [https://dexie.org/docs/Tutorial/Getting-started](https://dexie.org/docs/Tutorial/Getting-started)
   - SolidJS専用の解説ありませんが、**Vanillas JS**の項目が参考になります。
+
+## PWA化に必要なパッケージのセットアップ
+まずパッケージをインストールします。
+```shell
+# npmの場合
+npm install --save-dev vite-plugin-pwa
+
+# yarnの場合
+yarn add --dev vite-plugin-pwa
+```
+
+インストール後、ルートディレクトリの**vite.config.ts**を開き、pluginsを変更します。
+```typescript
+- plugins: [solidPlugin()],
++ plugins: [solidPlugin(), VitePWA({})], 
+```
