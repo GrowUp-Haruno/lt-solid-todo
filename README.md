@@ -26,3 +26,12 @@ yarn install
 - その他のテンプレート
   - [https://github.com/solidjs/templates](https://github.com/solidjs/templates)
   - SASSやRooterなどのテンプレートが収録されています。
+
+## SASS(SCSS)の導入方法
+```shell
+# npmの場合
+npm install --save-dev sass
+
+#yarnの場合
+yarn add --dev sass
+```
