@@ -49,7 +49,9 @@ yarn add dexie
 - [https://dexie.org/docs/Tutorial/Getting-started](https://dexie.org/docs/Tutorial/Getting-started)
   - SolidJS専用の解説ありませんが、**Vanillas JS**の項目が参考になります。
 
-## PWA化に必要なパッケージのセットアップ
+## PWA
+
+### PWA化に必要なパッケージのセットアップ
 パッケージをインストールします。
 ```shell
 # npmの場合
@@ -66,6 +68,55 @@ yarn add --dev vite-plugin-pwa
 - plugins: [solidPlugin()],
 + plugins: [solidPlugin(), VitePWA({})], 
 ```
+
+### PWAに必要なファイル
+- アイコン画像一式をpublicに配置する
+  - 192x192, 256x256, 384x384のマスク有りの画像
+  - 192x192, 256x256, 384x384のマスク無しの画像
+    - manifestのiconsに上記のファイルの場所と種類、サイズを記述する
+    ```json
+    icons: [
+      {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+      },
+      {...}
+    ]
+    ``` 
+  - favicon.ico
+    - index.htmlで指定する
+    ```html
+    <link rel="icon" type="image/ico" href="/icons/favicon.ico" />
+    ```
+  - apple-touch-icon.png
+    - index.htmlで指定する
+    ```html
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
+    ```
+  - robots.tsx
+    - 以下の内容を記述する
+    ```
+    User-Agent: *
+    Allow: /
+    ```
+
+- vite.config.tsを修正する
+```diff
++ import manifest from './manifest.json';
+- plugins: [solidPlugin(), VitePWA({}), tsconfigPaths()],
++ plugins: [
++   solidPlugin(),
++   VitePWA({
++     manifest: manifest,
++     includeAssets: ['robots.txt', 'icons/*.{png,ico}'],
++   }),
++   tsconfigPaths(),
++ ],
+```
+- SolidJSをインストールした直後はjsonが読める設定になっていないため、tsconfig.jsonのresolveJsonModuleを有効(true)に変更する
+
+
 
 ## import時のファイルパスのエイリアス化に必要なパッケージのセットアップ
 パッケージをインストールします。
