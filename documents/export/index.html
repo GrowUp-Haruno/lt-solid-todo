@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Reveal JS presentation</title>
+
+	<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+	<meta name="author" content="Hakim El Hattab">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="libs/reveal.js/4.1.3/reset.css">
+	<link rel="stylesheet" href="libs/reveal.js/4.1.3/reveal.css">
+
+	
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+	  <!-- highlight Theme -->
+  	
+	  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+	
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.1.3/plugin/chalkboard/style.css">
+	
+	
+	
+		<link rel="stylesheet" href="libs/reveal.js/4.1.3/plugin/customcontrols/style.css">
+	
+	<link rel="stylesheet" href="libs/styles/tasklist.css">
+
+
+
+  <!-- Revealjs Theme -->
+  
+  	<link rel="stylesheet" href="libs/reveal.js/4.1.3/theme/sky.css" id="theme">
+  
+  
+
+
+  <!-- Revealjs Theme -->
+  
+
+ 
+</head>
+
+<body>
+  
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <style type="text/css">
+  .reveal h1,
+  .reveal h2,
+  .reveal h3,
+  .reveal h4,
+  .reveal h5,
+  .reveal h6 {
+    text-transform: none;
+  }
+  p,h1,li { 
+    text-align: left;
+    font-size: 1.75rem;
+  }
+</style>
+<h2>SolidJSでTodoデスクトップアプリを作ってみてわかったこと</h2>
+<p>Daisuke.W</p>
+<p>2022.06.15 フロントエンドLT会 - vol.7</p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>自己紹介</h2>
+<p>Daisuke@React SolidJS大好き侍</p>
+<p>（Twitter: @fullStackHaruno）</p>
+<ul>
+<li>医療機器メーカー電気電子系エンジニアとして従事
+<ul>
+<li>回路設計やハーネス設計→ソフトウェア運用テスト設計&amp;業務自動化アプリ開発</li>
+</ul>
+</li>
+<li>現在はフロントエンドエンジニアを目指して日々アウトプット中！</li>
+<li>TypeScript、ReactやSolidJSが大好き</li>
+<li>LT登壇は2回目（フロントエンドLT会は初!!）</li>
+</ul>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h3>SolidJSでTodoデスクトップアプリを作ってみてわかったこと</h3>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h3>キッカケ</h3>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <p>ある日、Qiitaの記事
+「<a href="https://qiita.com/shadowTanaka/items/b6d00863a8d6bff37de6">React大好き侍が、「もうSolidJSでいいじゃん…//」ってなったワケ。</a>」
+を読んで興味が湧いた</p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h3><a href="https://www.solidjs.com/tutorial/introduction_basics">公式チュートリアル</a>をやってみた</h3>
+<hr>
+<p>書き方やコードの見た目はReactそっくりだが、完全に別物だった</p>
+<ul>
+<li>変化値の読み取りは関数を用いる</li>
+<li>Cleanupが必要な関数の扱いがラク</li>
+<li>propsの扱いは注意が必要</li>
+<li>制御フローのヘルパー関数のおかげでreturn内の見通しが良くなった</li>
+<li>etc…</li>
+</ul>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>変化値の読み取りは関数を用いる</h4>
+<hr>
+<pre><code class="language-jsx">function App() {
+  const [count, setCount] = createSignal(0);
+  // countがゲッター(値の読み取り)
+  // setCountがセッター(値の書き込み)
+
+  return (
+    &lt;button onClick={() =&gt; setCount(count() + 1)}&gt;
+      Count: {count()}
+    &lt;/button&gt;
+  );
+}
+</code></pre>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqps+YpU6DW09CysrGXoIZlw0WgheAEFCQgAKAEp+K14HeLI+YGYGCFwsXjI4XABhYtwAXV4AXgcnF3cvKDVUgAZ0ywTefX1cqNxAGQZAJoZAYYZAfoZAH4ZUwBIFQDsGQFqowH8GQDXlQCiGdOzB4Yrq2rHAboZZhZXAD7NAWQZAHvj1vYh9oVwmBNT9nIAeE3pcXDxXjxKoaZgAa0aIAyTQAfOVKjVRqkisjMgBqXgARnSklhXxyvCRJUQ-FRJQykgJ330fwB8XxAz6VipzwgQlE4lSMMa8O+yUIg1hZREtGY9HgJQAdB5KgBRNRwSW4ABC+AAkiJPmAoCkVOkAITMzCSOpAA">動作デモ</a></p>
+<p>return()内とcreateEffect()内のどこでゲッターが読みとられたのかを追跡して変更があれば更新する</p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>Cleanupが必要な関数の扱いがラク</h4>
+<hr>
+<p>1秒ごとにカウントアップする例</p>
+<pre><code class="language-jsx">const App = () =&gt;{
+  const [count, setCount] = createSignal(0);
+  
+  // 1秒ごとに加算
+  const intervalID = setInterval(() =&gt; setCount(prev =&gt; prev + 1), 1000);
+  // コンポーネントが破棄される時にクリーンアップを実行
+  onCleanup(() =&gt; clearInterval(intervalID));
+  
+  return &lt;div&gt;Count: {count()}&lt;/div&gt;;
+}
+</code></pre>
+<p>SolidJSはコンポーネントを<strong>再レンダリングしない</strong>ので、setIntervalは<strong>一度</strong>だけ呼び出される</p>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqsvWhABhNTgoCHpCKVl5RRU6DW09CysrZn8yPgBBQgiAXl4ACgBKXhyAPn4rXgc0vmBU+ghcXzI4XACGRoBdEocnF3cvKDV8gAZCywhK3n19XgBGQCXPQBUGQAsGQGsGQAKlQHTvKdSIdN4MF0YANyGASQARHpbcc8bxM+GikvLb9obcfPrGl4BqeaFXxzEag8ZTGa8QDNDIBnhkAuwyAH4ZALMMMMAEwyAGQZACwegBGLQCqDIAYhkA0QyAITM1oB6hkAVwwImGAIoZAMMMgHWGQBJDIB87UAMhFTfxBEJhQj5F5lBzBKCMe7HJ75I6PC6XQrgyYQKpCXBMRUAHhEaBOpQ+jUQ-B+X0KkjV+k12omkgmViEonE-OKgrVWQi+lKvhEtGY9HgjQAdB5WgBRYK+3AAIXw5xE+RUUGyKkKAEJ5WBJJ0gA">動作デモ</a></p>
+<p>Reactで同じ書き方をした場合、際限なくsetIntervalを呼び出して暴走する</p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>propsの扱いは注意が必要</h4>
+<hr>
+<p>Counterコンポーネント側で分割代入をすると、countの追跡が途切れるため初期値0から変わらない</p>
+<pre><code class="language-jsx">const Counter = ({ count }) =&gt; {
+  return &lt;div&gt;Count: {count}&lt;/div&gt;; // 0
+};
+
+const App = () =&gt; {
+  const [count, setCount] = createSignal(0);
+
+  return (
+    &lt;&gt;
+      &lt;Counter count={count()} /&gt;
+      &lt;button onClick={() =&gt; setCount((prev) =&gt; prev + 1)}&gt;加算&lt;/button&gt;
+    &lt;/&gt;
+  );
+};
+</code></pre>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqps+YpU6DW09CysrZloIMj4AYQYIFwkAXl4AChBI+kTJAEpeZIA+fiteQThcJgheAB4RNAA3Qvjs3ER+LJya-Xqm8159fV4ABitJSwgIqJjeAEFCQgL0-KKS6odpvmBO3CxeMgqWxIBdJcc4ZzdPbzTh3InS8srGarTHsprC97Lao6SN1rJTIJXBpXLSfRfdY-Womei4XBRXhRWIaZgAayBYIKxQOuD+aTShCEDRWxWJcAavAA1LwAIzgwqAAqVAOne3ThCKiUJh3W5vHuYweECEonEhLJtXmi0hexEtGY9HgiQAdB4KgBRNRwJW4ABC+AAkiI3mAoAsVLkAIQCzCSY5AA">動作デモ</a></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>SolidJSでのpropsの扱い方</h4>
+<hr>
+<p>分割代入せずにprops.countとすることで追跡できる</p>
+<pre><code class="language-jsx">const Counter = (props) =&gt; {
+  return &lt;div&gt;{props.count}&lt;/div&gt;   // 0,1,2...
+}
+</code></pre>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqps+YpU6DW09CysrZloIMj4AYQYIFwkAXl4ACkJ5QjIASl5kgD5+K15BOFwmCF4AHhE0ADcC+PpExH5M2myAOkiW3Elq-TrG8159fV4ABitJSwgIqJjeAEFCQnz0vMLiqodFvmBexKxeMnLmxIBdDcc4ZzdPbzTJnLmSsorGKrT30uqC36lGoXJJ7PrJEBHXBpHLSfQA3ZAmomei4XBRXhRWIaZgAawhMPyRTOuBBaQyQnqWyKmTg9V4AGpeABGWEFQAFSoB070GKLRUQRSMGAt4rxmbwgQlE4nJ1Jqq3W8JOIlozHo8ESXQ85QAomo4OrcAAhfAASREPzAUDWKhyAEJRZhJJcgA">動作デモ</a></p>
+<p>propsのデフォルト値はmergePropsで設定できる</p>
+<pre><code class="language-typescript">const Counter = (props) =&gt; {
+  const merged = mergeProps({ count: 0 }, props);
+  return &lt;div&gt;{merged.count}&lt;/div&gt;   // 0,1,2...
+}
+</code></pre>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqps+YpU6DW09CysrZloIMj4AYQYIFwkAXl4ACkJ5QjIASl5kgD5+K15BOFwmCF4AHhE0ADcC+PpExH5M2myAOkiW3Elq-TrG8159fV4ABitJSwgIqJjeAEFCQnz0vMLiqodFvmBexKxeMnLmxIBdDcc4ZzdPbzTJnLmSsorGKrT30uqC36lGoXJJ7PrJEBHXBpHLSfQA3ZAmomei4XBRXhRWIaZgAawhMPyRTOuBBaQyQnqWyKmTg9V4AGpeABGWEFQAFSoB070GKLRUQRSMGAt4rxmbwgQlE4nJ1Jqq3W8JOIlozHo8ESXQ85QAomo4OrcAAhfAASREPzAUDWKhyAEJRZhJJcgA">動作デモ</a></p>
+<p>以下の定義方法はならpropsの個別設定ができる</p>
+<pre><code class="language-tsx">const Counter = (props: { count }) =&gt; {...}
+</code></pre>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqsvAMIKXBDCfNJyCsqqGtp6FlZWzLQQZHwB9BAuEgC8vAAUhPKEZIj2iemhAJS8WQB8-Fa8gnC4TBC8ADwiaABuNWkZJSAFtEUAdGUZku36Xb3mvPr6vAAMVpKWEAlJKbwAgoSE1XlVtfVtDtt8wBO4vmTN-bgAukeOcM5unt65yxUbDU0Wow2rkAY12jUwY0Oo9xBdylkQDdchVpPpIedoR0TPRcLgkrwkn4NMwANaIlHVOr3XCPXL5ITdE51Apwbq8ADUvAAjKiaoACpUA6d7THF4pIYrHTCW8P5rf4QISicT05kdfaHdG+ES0Zj0eAZUYeZoAUTUcH1uAAQvgAJIiUFgKAHFQVACEsswkieQA">動作デモ</a></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>制御フローのヘルパー関数のおかげでreturn内の見通しが良くなった</h4>
+<hr>
+<p>Reactで短絡評価を使って「<code>&lt;div&gt;Loading...&lt;/div&gt;</code>」を出力する場合、</p>
+<pre><code class="language-jsx">&lt;&gt;
+  {
+    isLoading &amp;&amp; &lt;div&gt;Loading...&lt;/div&gt;
+  }
+&lt;/&gt;
+</code></pre>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>制御フローのヘルパー関数のおかげでreturn内の見通しが良くなった</h4>
+<hr>
+<p>SolidJSで同じことをする場合、ヘルパー関数のShowを用いる
+(whenがtrueならchildrenを表示、falseならfallbackの内容を表示)</p>
+<pre><code class="language-jsx">&lt;Show when={isLoading()} fallback={&lt;div&gt;記事一覧&lt;/div&gt;}&gt;
+  &lt;div&gt;Loading...&lt;/div&gt;
+&lt;/Show&gt;
+</code></pre>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqsvVwAtaQ19aCABhNTgoCHpCKVl5RRU6DW09CysrGXoIZlw0UN4whggXRgAKAEp+K14HULI+YDQyABlaKBEMD18yOFwASTaOrogPAF1eAF4HJxd3Lyg1ctxGejhKywha+ohG3nz4BkGAEWnePtwAFQ44Y-Kq6YA+Gog6usuh9s7u8pklvqbHaSXwAZgADJCgW9eKEIlEYoQHtUpi8QDs6sxIlBGDcjvRcCtbscBidoXVJNCdkJcEw3uUMbwADwBIK8Qz+YRTEAtb6jDxVaT-NRqExQZgAa25TK6ADcnoAMKMA0XKAADlAOWRTP0cqekiejLqMrQ8r53QAdObNdrGZrWYY9TDoZJMhAhKJxMjnszijkyrx9E9fCJaMx6PBSqaPP0AKKRMO4ABC+AGIgZYCghEIKkqAEJoWBJOMgA">動作デモ</a></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>制御フローのヘルパー関数のおかげでreturn内の見通しが良くなった</h4>
+<hr>
+<p>Reactで三項演算子を使うと…</p>
+<pre><code class="language-jsx">&lt;&gt;
+  {
+    条件1 ? (
+      &lt;Component1 /&gt;
+    ) : 条件2 ? (
+      &lt;Component2 /&gt;
+    ) : 条件3 ? (
+      &lt;Component3 /&gt;
+    ) : (
+      &lt;Component4 /&gt;
+    )
+  }
+&lt;/&gt;
+</code></pre>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>制御フローのヘルパー関数のおかげでreturn内の見通しが良くなった</h4>
+<p>SolidJSの場合、ヘルパー関数のSwitchとMatchを用いる
+(Switch内を上から順番に評価して、条件に一致するコンポーネントを一つ出力する)</p>
+<pre><code class="language-jsx">return (
+  &lt;Switch fallback={&lt;Component4 /&gt;}&gt;
+    &lt;Match when={条件1} children={&lt;Component1 /&gt;} /&gt;
+    &lt;Match when={条件2} children={&lt;Component2 /&gt;} /&gt;
+    &lt;Match when={条件3} children={&lt;Component3 /&gt;} /&gt;
+  &lt;/Switch&gt;
+);
+</code></pre>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqsjuM7gAURkZOGZcLF5XQzRcZgALSIBZZwSpWXlFFToNbT0LKysZeghwtFoIXgBhBggXRgAKAEp+K14HCrI+YGZaiN4yOFwaktwAXV4AXgcnF3cvKDUGgAYmy0qOiC7eDHqAN0WASQARKYGhw7rxA6XmyYA+EEHhvobCIT2H97g9gGoARiakiwAFZlqs2jN-C5gqFwg07o9Ie00DIGr1Rs0ADwAFlWQlwTAgyIcan8jEu+0WDV21yOxyaJN6W3UcAAdGpaB4GipANUMgDKGQDPDIAJhkASQyAToZhYBhhkA6wyAdQZAH4McsA+gwqRkbSTqyEEom8HkbdpY+4krEiNB7R4YurNSRY-Rmi0m6KxNIyRZqExQZgAa0mIFN5vuAGZloBTuUAUHJ2h33STGg3tXhYlJxeK8QzxYR+q24ZqJ6b-ZbSBJoNQiIQQP0Bi0F0OAaDko4HpPo4wmE0nUqn05mQNnc1jpgAmQsOeIlsvdqv3GvhwCADEO6w2LU2W63E8m0l2Kz3Xi1+7wQ0XR6Xy5Xo-PZyGF-bG7xmyb9M6UyvDXeNmsrJJChBy2JGrmHomIxXBIzaRCItDMPQ8B1GyHhDIEZLQbgABC+CHCIPJgFAhCEGqACE76YJIYxAA">動作デモ</a></p>
+<p>この他にも、配列をイテレーションするForや、コンポーネントをオブジェクトにまとめて直接表示するDynamic等ヘルパーが用意されている</p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2><a href="https://solid-todo-flame.vercel.app/">Todoデスクトップアプリ</a>を作ってみた！</h2>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h3>技術構成</h3>
+<hr>
+<ul>
+<li>SolidJS</li>
+<li>Sass(Scss)</li>
+<li>Service Worker + manifest
+<ul>
+<li>viteのプラグイン（vite-plugin-pwa）を用いてPWA化</li>
+</ul>
+</li>
+<li>IndexDB
+<ul>
+<li>ToDoデータをローカルに保存</li>
+</ul>
+</li>
+<li>Vercel(GitHub経由)でデプロイ</li>
+</ul>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h3>アプリを作ってみてわかったこと</h3>
+<hr>
+<ul>
+<li>Sass(Scss)の導入が非常にラク</li>
+<li>PWA化もラク</li>
+<li>コンテキスト作成もラク</li>
+<li>refを用いたDOM操作がReactよりも素直に扱える</li>
+</ul>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>Sass(Scss)の導入が非常にラク</h4>
+<hr>
+<p>「<code>yarn add --dev sass</code>」を実行するだけ</p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>PWA化もラク</h4>
+<hr>
+<p>Viteのプラグイン（vite-plugin-pwa）を入れて、manifestを宣言するだけ</p>
+<br/>
+<p>SASSやPWA化のヒントは<a href="https://github.com/solidjs/templates">SolidJS公式のtemplete集</a>にある</p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>コンテキスト作成もラク</h4>
+<hr>
+<p>SolidJSもReactのカスタムフックと同じ書き方でにロジックを分離することができる</p>
+<pre><code class="language-jsx">function createTodo() {
+  const [count, setCount] = createSignal(0);
+  const handleInput = () =&gt; setCount((prev) =&gt; prev + 1);
+  return { count, handleInput };
+}
+
+const App1 = () =&gt;{
+  const { count, handleInput } = createTodo();
+  return (...);
+}
+const App2 = () =&gt;{
+  const { count, handleInput } = createTodo();
+  return (...);
+}
+</code></pre>
+<p>スコープはそれぞれのコンポーネント内となる</p>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqps+YpU6DW09CysrGXoIZlw0WggHJxcAFVoRWgAKAEp+K14HeLI+YGYGCFwsXjI4XABhMtwAXV4AXkS4ZzdPbwyABizLBIKIIt4ACyhRNTgASQhCej427NaAPiqa+qjcDIzCIQA3HJb1-bgD3gBqXgBGAbzBGqYEgVLtyomp2fnFqUHJcLRQp8ACChEIN1avBWJ1yQ1KIz4rwaH0mImmcwWfGkbUcHRSaUy9yGQlwz2hD3yAB4RGgDqtKfleCCAAosm6IXhUkyLXDxXjxWoaZgAaxaIE+6O+WMkqxAb3K2UkVP0PNwfIgDKG1P0tPpD2JkkGCNGYMIACYoTD1iAHiakQV3uM0RiftioXjOql0tlBvlSeSMoyaXStUymayWebOdzefzBcKxRKXdLFrL5Q0lSq1Rqw0yVXq84bBlYhKJxEGhtaKdquXnw1SzZD9PX82bLS3g52hlksA90sx6PBygA6Dw1ACi02HuAAQvgZiIg2AoOCVFkAIRWYlgSSNIA">動作デモ</a></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>コンテキスト作成もラク</h4>
+<hr>
+<p>createRootでラップすることでコンテキストとして扱える</p>
+<pre><code class="language-typescript">function createTodo() {...}
+const createTodoCtx = createRoot(createTodo)
+
+const App1 = () =&gt;{
+  const { count, handleInput } = createTodoCtx;
+  return (...);
+}
+const App2 = () =&gt;{
+  const { count, handleInput } = createTodoCtx;
+  return (...);
+}
+</code></pre>
+<p>App1で変化があるとApp2も変化する</p>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqsDpy4AlWlo+aTkFZVUNbT0LKysZeghmXDRaCD84ZzgAFVoRWgAKAEp+K14HdLI+YGYGCFxfMjhcAGF63ABdXgBeTOz3Lyg1QoAGYssMyohq3gALKFE1OABJCEJ6Pj6S3oA+Xma2jsLCwiEAN1Ke-bO4c94Aal4ARgnywRamDIE6pMb5xYiZZrDahSaSeLJKp8RxZFx5AqtXAUXr9QLBXCFWHZBG0N4QKx1GZ8ACChEIz1RO2uZSmRNmPw6vgWS1W602UlR2Ph+VoSIokwqQlwX14hXeFQAPCI0OddhKKrwSQAFZXPRC8SUmTa4dK8dKtDTMADWPRALKBbNBkl2IF+DRKkkl+m1uF1EHlUyl+hlcve+Mkk3ppPJACYqVd9iB3sH7Pb-hbgezQlz-LlefzBR8RYwMuKvZrfZ7FYqVcrQxqtTq9QajabzYCk9bbfHHc7Xe7i4rnUX-eDJlYhKJxPmKtT9qPu12S5KyRTePpp925+HFwrnV3ilh3gVmPR4A0AHQeFoAUWWB9wACF8CsROKwFBySpigBCKz4sCSTpAA">動作デモ</a></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>refを用いたDOM操作がReactよりも素直に扱える</h4>
+<hr>
+<ul>
+<li><a href="https://solid-todo-flame.vercel.app/">Todoデスクトップアプリ</a>には再編集機能がある</li>
+<li>登録済みのToDoをクリックすると、Inputに切り替わり自動的にフォーカスが当たる様になっている
+<ul>
+<li>フォーカスはReact同様refでDOMを操作する</li>
+<li>しかし、SolidJSにはuseRefのようなものが無い
+<ul>
+<li>どうするのか？</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>refを用いたDOM操作がReactよりも素直に扱える</h4>
+<hr>
+<p>変数を宣言して必要なタイミングでfocusを実行するだけ</p>
+<pre><code class="language-typescript">let inputRef
+createEffect(() =&gt; {
+  inputRef.focus();
+  ...
+});
+
+return &lt;input type=&quot;text&quot; ref={inputRef}&gt;
+</code></pre>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqsvVwAtaQ19HOGc4AFEZGThmPmk5BWVVDW09CysrGXoIOLRaCF4AYQYIF0YACgBKfiteBwKyPmAMQnpcADUoNXo4XzI4XABJCDbO7t6AXV4AXgcnF3cvboqVQDGGQE6GQAmGFSrLQoaIJt4WsgiRNFx+waGzi9xpudDwpe8KmW6BvcyDtUHeVrtABKcBkiF4AAkACoAWQAMiMxhE-vAyvs6vMwi4ojE4hVqrMAHy1A71NAyXgVNB3S7VGqA3AgmQAOhktGY9DI1X29Uk3wgGOYjT4-igoj+RQ0zAA1rNKTUZsSQBj6gNhjTcBVcIxevzeTzBIMmIVVqTeAAeQkq+oWgJBa023iGfzCGYgannWlVSQOm0fNRqExQGVu82EXgFSVoEMgUXiuBRmWSQnu0btLo9ODVSTm-SEQk+s31K1Fm3mhm+x0EYgzFQuCi4FSVm0ANwmcDdDIzvWzzfqQhknbTjNBAEJC47JxGIIj2m6KnAFUq+za1bPxpmF8yOYwhGUoVBGB5Bsy25m9VObZIJ5f6gUAEI9Rjzpck2+Otca96fRcG2-X5t9BLKdcztQxgLLICMX5QsrD3MRKgJRULRKHJyl4IDfBEdl6FRXBmWPXBkTgPD73wIYRFWMAoEIQhdlHfkwEkSYgA">動作デモ</a></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>refを用いたDOM操作がReactよりも素直に扱える</h4>
+<hr>
+<p>refを関数として扱うことも可能</p>
+<pre><code class="language-typescript">// elはHTMLInputElement型
+const inputRef = (el:HTMLInputElement) =&gt; {
+  createEffect(() =&gt; {
+    ...
+    el.focus();
+  });
+}
+return &lt;input type=&quot;text&quot; ref={inputRef}&gt;
+</code></pre>
+<p><a href="https://playground.solidjs.com/?version=1.4.1#NobwRAdghgtgpmAXGGUCWEwBowBcCeADgsrgM4Ae2YZA9gK4BOAxiWGjIbY7gAQi9GcCABM4jXgF9eAM0a0YvADo1aAGzQiAtACsyAegDucAEYqA3EogcuPfr2ZCouOAGU0Ac2hqsvVwAtaQ19HOGc4AFEZGThmPmk5BWVVDW09CysrGXoIOLRaCF4AYQYIF0YACgBKfiteBwKyPmAMQnpcADUoNXo4XzI4XABJCDbO7t6AXV4AXgcnF3cvboqVQDGGQE6GQAmGFSrLQoaIJt4WsgiRNFx+waGzi9xpudDwpe8KmW6BvcyD5ka+fxQURqOBFDTMADWs141VmAD5agd6gNhndLhVcIxet8DpJ9nVBIMmIVVkjeAAeOEE+r1ckBILUmn1Qz+YQzEBoNG4aqSRlMj5qNQmKCQ9nkwi8ApgtCikCA4Gg8EQyRwjmjdpdHpwHnk-SEOG8sn1KlGmnk1rtPlM3gEYgzFQuCi4FRWpkANwmcHZFvGWp5rppQhk7IqcDUNRmCJAAaZzxcURicQqsMjiOt6ZpaBkMM553RVRqYYAdDJaMx6GRqvsM9bJDia-VJIaG5KICMxiG4BGozGaSj2xrPaGi+XGEIygAVKCMDyDIserX1htN3sFABCPUYIe7aZbvH7XPeny71eXzYz+hN6d19MMV7Nl4JOMNVnHYkqKYR5JKOXKvEvvgiGW9DwGURazrgEQgqBuBrvgQwiKsYBQIQhC7AAhDiYCSJMQA">refの動作</a></p>
+<p>ロジック分離する場合はこちらを使う必要がある</p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>refを用いたDOM操作がReactよりも素直に扱える</h4>
+<hr>
+<ul>
+<li>Reactの場合、inputに限らずCanvasやWeb Audio API等はuseRefが必要になるが、呼び出す度に「.current」と書く必要がある</li>
+<li>SolidJSの場合、変数を呼び出すだけで済むので書き易く、読み易くなる</li>
+</ul>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>まとめ</h4>
+<hr>
+<ul>
+<li>公式のドキュメントやチュートリアル、Play Groundが充実している</li>
+<li>コードの見た目はReactそっくりだが、中身は完全に別物</li>
+<li>Reactから移植する場合、再レンダリングされないことに注意する
+<ul>
+<li>例）依存配列無しuseEffectはロジックを全て外に出す</li>
+</ul>
+</li>
+</ul>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>参考文献など</h4>
+<hr>
+<ul>
+<li><a href="https://www.solidjs.com/">SolidJS 公式サイト</a></li>
+<li><a href="https://www.solidjs.com/docs/latest/api">SolidJS ドキュメント</a></li>
+<li><a href="https://www.solidjs.com/tutorial/introduction_basics">SolidJS チュートリアル</a></li>
+<li><a href="https://playground.solidjs.com/">SolidJS PLAYGROUND</a></li>
+<li><a href="https://qiita.com/shadowTanaka/items/b6d00863a8d6bff37de6">React大好き侍が、「もうSolidJSでいいじゃん…//」ってなったワケ。</a></li>
+<li><a href="https://solid-todo-flame.vercel.app/">Todoデスクトップアプリ</a>
+<ul>
+<li><a href="https://github.com/GrowUp-Haruno/solid-todo">GitHubで公開中</a></li>
+</ul>
+</li>
+</ul>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h3>ご清聴ありがとうございました</h3>
+
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  	
+	<script src="libs/reveal.js/4.1.3/reveal.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/zoom/zoom.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/notes/notes.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/search/search.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/markdown/markdown.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/highlight/highlight.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/menu/menu.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/math/math.js"></script>
+
+	<script src="libs/reveal.js/4.1.3/plugin/fullscreen/plugin.js"></script>
+  
+  	<script src="libs/reveal.js/4.1.3/plugin/animate/plugin.js"></script>
+  	<script src="libs/reveal.js/4.1.3/plugin/animate/svg.min.js"></script>
+  
+  	<script src="libs/reveal.js/4.1.3/plugin/anything/plugin.js"></script>
+	  <script src="libs/reveal.js/4.1.3/plugin/anything/Chart.min.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/anything/d3/d3.v3.min.js"></script>				
+	<script src="libs/reveal.js/4.1.3/plugin/anything/d3.patch.js"></script>			
+	<script src="libs/reveal.js/4.1.3/plugin/anything/d3/queue.v1.min.js"></script>		
+	<script src="libs/reveal.js/4.1.3/plugin/anything/d3/topojson.v1.min.js"></script>		
+	<script src="libs/reveal.js/4.1.3/plugin/anything/function-plot.js"></script>
+
+ <!--	<script src="libs/reveal.js/4.1.3/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.1.3/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.1.3/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+<script src="libs/reveal.js/4.1.3/plugin/chalkboard/plugin.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/customcontrols/plugin.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/embed-tweet/plugin.js"></script>
+
+	<script src="libs/reveal.js/4.1.3/plugin/chart/chart.min.js"></script>
+	<script src="libs/reveal.js/4.1.3/plugin/chart/plugin.js"></script>
+
+  <script>
+
+		const printPlugins = [
+			RevealNotes, 
+			RevealHighlight,
+			RevealMath,
+			RevealAnimate,
+			RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+			controlsTutorial: true,
+			controlsLayout: 'bottom-right',
+			controlsBackArrows: 'faded',
+			progress: true,
+			slideNumber: false,
+			//#showSlideNumber "all" "print" "speaker"
+			hash: true,//#  hash: false,
+			//# respondToHashChanges: true,
+			//# history: false,
+			keyboard: true,
+			//#keyboardCondition: null,
+			overview: true,
+			center: true,
+			touch: true,
+			loop: false,
+			rtl: false,
+			//#navigationMode: 'default', linear grid
+			shuffle: false,
+			fragments: true,
+			fragmentInURL: false,
+			embedded: false,
+			help: true,
+			//#pause: true
+			showNotes: false,
+			autoPlayMedia: false, // TODO fix this to a nullable value
+			//#preloadIframes: null. true false
+			//#autoAnimate: true
+			//#autoAnimateMatcher: null,
+			//#autoAnimateEasing: 'ease',
+			//autoAnimateDuration: 1.0,
+			//#autoAnimateUnmatched: true
+			//#autoAnimateStyles: []
+			autoSlide: 0, // TODO fix this to a falseable value
+			autoSlideStoppable: true,
+			autoSlideMethod: '0',
+			defaultTiming: 120,
+			mouseWheel: false,
+			//#previewLinks: false
+			//#postMessage: true,  // TODO : this can cause issues with the vscode api ???
+			//#postMessageEvents: false,
+			//#focusBodyOnPageVisibilityChange: true,
+			transition: 'default',
+			transitionSpeed: 'default',
+			backgroundTransition: 'fade',
+			//#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+			//#pdfSeparateFragments: true,
+			//#pdfPageHeightOffset: -1,
+			viewDistance: 3,
+			//#mobileViewDistance: 2,
+			display: 'block',
+			//#hideInactiveCursor: true,
+			//#hideCursorTime: 5000
+
+			// Parallax Background
+			parallaxBackgroundImage: '',
+			parallaxBackgroundSize: '',
+			parallaxBackgroundHorizontal: 0,
+			parallaxBackgroundVertical: 0,
+			
+			//Presentation Size
+			width: 960,
+			height: 700,
+			margin: 0.04,
+			minScale: 0.2,
+			maxScale: 2,
+			disableLayout: false,
+
+			audio: {
+				prefix: 'audio/', 	// audio files are stored in the "audio" folder
+				suffix: '.ogg',		// audio files have the ".ogg" ending
+				textToSpeechURL: null,  // the URL to the text to speech converter
+				defaultNotes: false, 	// use slide notes as default for the text to speech converter
+				defaultText: false, 	// use slide text as default for the text to speech converter
+				advance: 0, 		// advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+				autoplay: false,	// automatically start slideshow
+				defaultDuration: 5,	// default duration in seconds if no audio is available
+				defaultAudios: true,	// try to play audios with names such as audio/1.2.ogg
+				playerOpacity: 0.05,	// opacity value of audio player if unfocused
+				playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+				startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+			},
+			
+			chalkboard: { // font-awesome.min.css must be available
+					//src: "chalkboard/chalkboard.json",
+					storage: "chalkboard-demo",
+				},
+			
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+						{ icon: '<i class="fa fa-pen-square"></i>',
+						  title: 'Toggle chalkboard (B)',
+						  action: 'RevealChalkboard.toggleChalkboard();'
+						},
+						{ icon: '<i class="fa fa-pen"></i>',
+						  title: 'Toggle notes canvas (C)',
+						  action: 'RevealChalkboard.toggleNotesCanvas();'
+						}
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+		
+
+	</script>
+
+</body>
+
+</html>
